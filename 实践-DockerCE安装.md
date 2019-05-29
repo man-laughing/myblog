@@ -1,10 +1,9 @@
 
 ---
-title: Docker-CE INSTALL
+title: 实践-DockerCE安装
 date: 2019/05/29
 tags: 
    docker
-   kubernetes
 ---
 
 ### 卸载老的Docker引擎
