@@ -12,18 +12,21 @@
 |CentOS 7.6  |3.10.0   |
 
 ## 添加第三方PHP安装YUM仓库源
+
 ```bash
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 ```
 
 ## 安装PHP7.2
+
 ```bash
 yum install php72w-common php72w-fpm php72w-opcache php72w-gd php72w-mysqlnd php72w-mbstring php72w-pecl-redis php72w-pecl-memcached php72w-devel php72w-cli
 
 ```
 
 ## 验证
+
 ```bash
 [root@instance-1 yum.repos.d]# php -v
 PHP 7.2.17 (cli) (built: May 13 2019 18:03:04) ( NTS )
@@ -34,6 +37,7 @@ Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies
 
 
 ## 配置PHP-FPM(/etc/php-fpm.d/www.conf)
+
 ```bash
 [www]
 user = nobody
@@ -59,11 +63,13 @@ php_value[soap.wsdl_cache_dir]  = /var/lib/php/wsdlcache
 ```
 
 ## 启动PHP-FPM服务
+
 ```bash
 systemctl start php-fpm
 ```
 
 ## Nginx安装
+
 ```bash
 tar xf nginx.tar.gz
 ./configure --prefix=/opt/app/nginx --with-stream --with-http_ssl_module --with-http_v2_module --with-debug
@@ -72,6 +78,7 @@ make install
 ```
 
 ## Nginx PHP虚拟机主机配置
+
 ```bash
     server {
         listen  80;
@@ -98,6 +105,7 @@ make install
 ```
 
 ## 启动Nginx服务
+
 ```bash
 /opt/app/nginx/sbin/nginx -t
 /opt/app/nginx/sbin/nginx 
