@@ -53,8 +53,8 @@ mount -t glusterfs gfs01:/gv0 /testdir  //上面不配置hosts这里挂载失败
 * 确认挂载
 
 ```bash
-df -Th |grep testdir   //服务端的pv0卷需开启df，这里已经开启否则看不到
-mount |grep gv0    //确认是否成功挂载
+df -Th |grep testdir    //服务端的pv0卷需开启df，这里已经开启否则看不到
+mount |grep gv0         //确认是否成功挂载
 ```
 
 
@@ -63,3 +63,12 @@ mount |grep gv0    //确认是否成功挂载
 ```bash
 cat -n /var/log/{YOUR_MOUNT_POINT}.log  //查看日志，对症分析
 ```
+
+## 开机自动挂载
+
+* 写入文件（/etc/fstab）
+
+```bash
+gfs01:/gv0 /testdir glusterfs defaults,_netdev 0 0
+```
+
