@@ -35,7 +35,13 @@ libcrc32c              12644  4 xfs,ip_vs,nf_nat,nf_conntrack
 ipvsadm-1.27-7.el7.x86_64
 ```
 
-* 配置VIP地址（在所有节点执行）
+* 配置VIP地址（virtualServer节点执行）
+
+```bash
+[root@localhost ~]# ifconfig lo:0 10.122.138.233 netmask 255.255.255.255
+```
+
+* 配置VIP地址且添加路由（realServer节点执行）
 
 ```bash
 [root@localhost ~]# ifconfig lo:0 10.122.138.233 netmask 255.255.255.255
