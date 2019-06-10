@@ -8,9 +8,9 @@
 
 ## 环境
 
-|  OS  |  Kernel |  IP   | Version |
-|:-----|:--------|:------|:--------|
-|CentOS 7.6|3.10.0|10.99.73.32|1.8.0|
+|  OS  |  Kernel |  IP   | Harbor  |Docker |docker-compose |
+|:-----|:--------|:------|:--------|:------|:--------------|
+|CentOS 7.6|3.10.0|10.99.73.32|1.8.0|18.09.6|1.24.0|
 
 
 ## 安装方式
@@ -31,10 +31,10 @@ NOTE：以上依赖我都已经提前安装好了
 * 下载Harbor离线安装包且解压缩
 
 ```bash
-[root@prometheus-shqs-1 harbor_install]# mkdir /usr/local/harbar_install
-[root@prometheus-shqs-1 harbor_install]# cd /usr/local/harbar_install
+[root@prometheus-shqs-1 ~]# mkdir /usr/local/src/harbor_install
+[root@prometheus-shqs-1 ~]# cd /usr/local/src/harbor_install
 [root@prometheus-shqs-1 harbor_install]# wget -S "https://storage.googleapis.com/harbor-releases/release-1.8.0/harbor-offline-installer-v1.8.0.tgz"
-tar xf harbor-offline-installer-v1.8.0.tgz
+[root@prometheus-shqs-1 harbor_install]# tar xf harbor-offline-installer-v1.8.0.tgz
 [root@prometheus-shqs-1 harbor_install]# cd harbor
 [root@prometheus-shqs-1 harbor]# ll
 total 543152
