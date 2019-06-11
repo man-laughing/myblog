@@ -20,6 +20,7 @@ yum install -y openssl ca-certificates
 
 ```bash
 cp ca.crt /etc/pki/ca-trust/source/anchors/
+update-ca-trust
 ```
 
 ## 验证
