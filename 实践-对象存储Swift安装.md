@@ -13,7 +13,7 @@
 
 ## 先决条件
 
-#### NOTE：以下所有操作在所有节点执行
+NOTE: 以下所有操作在所有节点执行
 
 * 清空iptables规则
 
@@ -73,7 +73,7 @@ tmpfs                   tmpfs      50M     0   50M    0% /run/user/0
 
 ## 配置memcached服务
 
-#### NOTE：以下所有操作在所有节点执行
+NOTE: 以下所有操作在所有节点执行
 
 * 安装memcached
 
@@ -89,7 +89,7 @@ tmpfs                   tmpfs      50M     0   50M    0% /run/user/0
 
 ## 配置rsync服务
 
-#### NOTE：以下所有操作在所有节点执行
+NOTE: 以下所有操作在所有节点执行
 * 安装rsync
 
 ```bash
@@ -135,7 +135,7 @@ exclude = ".*"
 
 ## 配置swift服务
 
-#### NOTE：以下所有操作在所有节点执行
+NOTE: 以下所有操作在所有节点执行
 
 * 安装软件包
 
@@ -319,9 +319,10 @@ use = egg:swift#bulk
 
 * 配置ring环
 
-###### NOTE: 以下配置在任意节点执行就好，然后把生成的文件copy到其他节点
+NOTE: 以下步骤在任意节点执行就好，然后把生成的文件（*.builder、*.gz）copy到其他节点
 
 ```bash
+
 //配置account账户哈希环
 [root@swift01 ~]# cd /etc/swift/
 [root@swift01 swift]# swift-ring-builder account.builder create 10 2 1      //表示2^10个分区，2个副本，1个区域
@@ -345,7 +346,8 @@ use = egg:swift#bulk
 [root@swift01 swift]# swift-ring-builder object.builder add --region 1 --zone 2 --ip 10.122.138.232 --port 6000 --device data01 --weight 100 
 [root@swift01 swift]# swift-ring-builder object.builder add --region 1 --zone 2 --ip 10.122.138.232 --port 6000 --device data02 --weight 100 
 [root@swift01 swift]# swift-ring-builder object.builder rebalance           //表示数据分区重新均衡
-```  
+
+``` 
 
 * 编辑服务启动脚本
 
@@ -439,7 +441,7 @@ tcp        0      0 10.122.138.231:6002     0.0.0.0:*               LISTEN      
 
 ## 简单的操作实例
 
-#### NOTE：以下验证操作在任意节点执行
+NOTE：以下验证操作在任意节点执行
 
 * 查看当前集群状态
 
