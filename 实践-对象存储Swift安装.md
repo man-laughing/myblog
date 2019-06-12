@@ -52,6 +52,7 @@ Disabled
 [root@swift01 ~]# mkfs.xfs /dev/sdb1
 [root@swift01 ~]# mkfs.xfs /dev/sdc1
 ```
+
 * 挂载磁盘
 
 ```bash
@@ -319,6 +320,7 @@ use = egg:swift#bulk
 * 配置ring环
 
 ###### NOTE: 以下配置在任意节点执行就好，然后把生成的文件copy到其他节点
+
 ```bash
 //配置account账户哈希环
 [root@swift01 ~]# cd /etc/swift/
@@ -343,7 +345,6 @@ use = egg:swift#bulk
 [root@swift01 swift]# swift-ring-builder object.builder add --region 1 --zone 2 --ip 10.122.138.232 --port 6000 --device data01 --weight 100 
 [root@swift01 swift]# swift-ring-builder object.builder add --region 1 --zone 2 --ip 10.122.138.232 --port 6000 --device data02 --weight 100 
 [root@swift01 swift]# swift-ring-builder object.builder rebalance           //表示数据分区重新均衡
-
 ```  
 
 * 编辑服务启动脚本
