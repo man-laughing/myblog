@@ -91,11 +91,8 @@ Devices:   id region zone     ip address:port replication ip:port  name weight p
             1      1    1 10.122.138.231:6000 10.122.138.231:6000 data02 100.00        512    0.00       
             2      1    2 10.122.138.232:6000 10.122.138.232:6000 data01 100.00        512    0.00       
             3      1    2 10.122.138.232:6000 10.122.138.232:6000 data02 100.00        512    0.00       
-[root@swift01 swift]# 
 ``` 
  
-
-
 * 配置迁移,修改哈希环配置
 
 **NOTE: 以下操作在任意节点配置，之后把最新的RING文件account.builder/container.builder/object.builder等gz文件分发到全部节点**
