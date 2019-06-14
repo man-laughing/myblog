@@ -15,7 +15,7 @@
 
 ## 先决条件
 
-**NOTE: 以下所有操作在所有节点执行**
+NOTE: 以下所有操作在所有节点执行 
 
 * 清空iptables规则
 
@@ -33,27 +33,7 @@ Disabled
 ```
 
 
-* 确保以下hosts文件（/etc/hosts）
-
-```bash
-10.122.138.231 swift01
-10.122.138.232 swift02
-```
- 
-
-
-## 迁移
-
-* 停止swift及相关依赖服务
-
-```bash
-[root@swift01 ~]# sh swift.sh proxy_stop
-[root@swift01 ~]# sh swift.sh stop
-[root@swift01 ~]# systemctl stop memcached 
-[root@swift01 ~]# systemctl stop rsyncd 
-```
-
-* 查看**迁移前**集群RING哈希环
+* 查看**迁移前**集群RING哈希环-（确保你的swift集群数是健康正常的）
 
 ```bash
 [root@swift01 swift]# swift-ring-builder account.builder 
@@ -92,10 +72,26 @@ Devices:   id region zone     ip address:port replication ip:port  name weight p
             2      1    2 10.122.138.232:6000 10.122.138.232:6000 data01 100.00        512    0.00       
             3      1    2 10.122.138.232:6000 10.122.138.232:6000 data02 100.00        512    0.00       
 ``` 
+
+
+## 迁移
+
+NOTE: 以下所有操作在所有节点执行 
+
+* 停止swift及相关依赖服务
+
+```bash
+[root@swift01 ~]# sh swift.sh proxy_stop
+[root@swift01 ~]# sh swift.sh stop
+[root@swift01 ~]# systemctl stop memcached 
+[root@swift01 ~]# systemctl stop rsyncd 
+```
+
+
  
 * 配置迁移,修改哈希环配置
 
-**NOTE: 以下操作在任意节点配置，之后把最新的RING文件account.builder/container.builder/object.builder等gz文件分发到全部节点**
+NOTE: 以下操作在任意节点配置，之后把最新的RING文件account.builder/container.builder/object.builder等gz文件分发到全部节点即可
 
 ```bash
 
