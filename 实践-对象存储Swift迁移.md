@@ -36,7 +36,6 @@ Disabled
 * 查看**迁移前**集群RING哈希环-（确保你的swift集群数是健康正常的）
 
 ```bash
-
 [root@swift01 swift]# swift-ring-builder account.builder 
 account.builder, build version 5
 1024 partitions, 2.000000 replicas, 1 regions, 2 zones, 4 devices, 0.00 balance, 0.00 dispersion
@@ -72,8 +71,9 @@ Devices:   id region zone     ip address:port replication ip:port  name weight p
             1      1    1 10.122.138.231:6000 10.122.138.231:6000 data02 100.00        512    0.00       
             2      1    2 10.122.138.232:6000 10.122.138.232:6000 data01 100.00        512    0.00       
             3      1    2 10.122.138.232:6000 10.122.138.232:6000 data02 100.00        512    0.00 
-                  
-``` 
+[root@swift01 swift]#
+```
+
 
 ## 迁移
 
