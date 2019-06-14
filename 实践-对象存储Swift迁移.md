@@ -36,6 +36,7 @@ Disabled
 * 查看**迁移前**集群RING哈希环-（确保你的swift集群数是健康正常的）
 
 ```bash
+
 [root@swift01 swift]# swift-ring-builder account.builder 
 account.builder, build version 5
 1024 partitions, 2.000000 replicas, 1 regions, 2 zones, 4 devices, 0.00 balance, 0.00 dispersion
@@ -70,9 +71,9 @@ Devices:   id region zone     ip address:port replication ip:port  name weight p
             0      1    1 10.122.138.231:6000 10.122.138.231:6000 data01 100.00        512    0.00       
             1      1    1 10.122.138.231:6000 10.122.138.231:6000 data02 100.00        512    0.00       
             2      1    2 10.122.138.232:6000 10.122.138.232:6000 data01 100.00        512    0.00       
-            3      1    2 10.122.138.232:6000 10.122.138.232:6000 data02 100.00        512    0.00       
+            3      1    2 10.122.138.232:6000 10.122.138.232:6000 data02 100.00        512    0.00 
+                  
 ``` 
-
 
 ## 迁移
 
@@ -86,8 +87,6 @@ NOTE: 以下所有操作在所有节点执行
 [root@swift01 ~]# systemctl stop memcached 
 [root@swift01 ~]# systemctl stop rsyncd 
 ```
-
-
  
 * 配置迁移,修改哈希环配置
 
@@ -95,7 +94,6 @@ NOTE: 以下操作在任意节点配置，之后把最新的RING文件account.bu
 
 ```bash
 
-//account.builder 
 [root@swift01 swift]# swift-ring-builder account.builder set_info --ip 10.122.138.231 --change-ip 10.122.138.241 --change-replication-ip 10.122.138.241       //更换IP地址和复制IP
 Matched more than one device:
     d0r1z1-10.122.138.231:6002R10.122.138.231:6002/data01_""
@@ -113,7 +111,6 @@ Device d2r1z2-10.122.138.232:6002R10.122.138.232:6002/data01_"" is now d2r1z2-10
 Device d3r1z2-10.122.138.232:6002R10.122.138.232:6002/data02_"" is now d3r1z2-10.122.138.242:6002R10.122.138.242:6002/data02_""
 [root@swift01 swift]# 
 
-//container.builder 
 [root@swift01 swift]# swift-ring-builder container.builder  set_info --ip 10.122.138.231 --change-ip 10.122.138.241 --change-replication-ip 10.122.138.241        //更换IP地址和复制IP
 Matched more than one device:
     d0r1z1-10.122.138.231:6001R10.122.138.231:6001/data01_""
@@ -131,7 +128,6 @@ Device d2r1z2-10.122.138.232:6001R10.122.138.232:6001/data01_"" is now d2r1z2-10
 Device d3r1z2-10.122.138.232:6001R10.122.138.232:6001/data02_"" is now d3r1z2-10.122.138.242:6001R10.122.138.242:6001/data02_""
 [root@swift01 swift]# 
 
-//object.builder 
 [root@swift01 swift]# swift-ring-builder object.builder  set_info --ip 10.122.138.231 --change-ip 10.122.138.241 --change-replication-ip 10.122.138.241          //更换IP地址和复制IP
 Matched more than one device:
     d0r1z1-10.122.138.231:6000R10.122.138.231:6000/data01_""
