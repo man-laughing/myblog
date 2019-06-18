@@ -204,7 +204,7 @@ Devices:   id region zone     ip address:port replication ip:port  name weight p
 
 ```bash
 [root@swift01 ~]# swift -A http://10.122.138.242:8080/auth/v1.0 -U admin:admin -K admin upload test02  2G.test.zip
-``` 
+```
 
 * 验证文件分布
 
