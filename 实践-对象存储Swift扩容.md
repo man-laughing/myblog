@@ -50,7 +50,7 @@ NOTE: 我这里使用vmware虚拟机模拟真实环境，fdisk格式化磁盘过
 ```bash
 [root@localhost ~]# yum install centos-release-openstack-ocata 
 [root@localhost ~]# yum install openstack-swift-account openstack-swift-proxy  openstack-swift-container openstack-swift-object python-swift  python2-swiftclient rsync
-``` 
+```
 
 
 ## 扩容
