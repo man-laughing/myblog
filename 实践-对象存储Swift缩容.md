@@ -134,10 +134,9 @@ Devices:   id region zone     ip address:port replication ip:port  name weight p
             4      1    3 10.122.138.243:6000 10.122.138.243:6000 data01 100.00        769    0.13       
             5      1    3 10.122.138.243:6000 10.122.138.243:6000 data02 100.00        767   -0.13       
 [root@swift02 swift]# 
-NOTE： 请务必把最新的ring文件和builder文件分发到集群所有节点
-``` 
 
- 
+NOTE：请务必把最新的ring文件和builder文件分发到集群所有节点
+```
 
 ## 验证
 
