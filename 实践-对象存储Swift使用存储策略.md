@@ -6,11 +6,11 @@
 ---
 
 ## 环境
-|  OS  |  Kernel | IP     | Version| Role | Note |
-|:-----|:--------|:-----|:---------|:-----|:-----|
-|CentOS 7.6|3.10.0|10.122.138.241|openstack ocata| proxy/storage |-|
-|CentOS 7.6|3.10.0|10.122.138.242|openstack ocata| proxy/storage |-|
-|CentOS 7.6|3.10.0|10.122.138.243|openstack ocata|storage |-|
+|  OS  |  Kernel | IP     | Version| Role | 
+|:-----|:--------|:-----|:---------|:-----|
+|CentOS 7.6|3.10.0|10.122.138.241|openstack ocata| proxy/storage |
+|CentOS 7.6|3.10.0|10.122.138.242|openstack ocata| proxy/storage |
+|CentOS 7.6|3.10.0|10.122.138.243|openstack ocata|storage |
 
 
 ## 配置存储策略
@@ -68,7 +68,6 @@ NOTE: 编辑好这个文件请务必分发到集群所有节点
 NOTE: 配置好RING环之后请务必把生成的\*.builder、\*.gz文件分发到集群所有节点
 ```
 
-
 * 查看Policy-1配置的RING环
 
 ```bash
@@ -111,7 +110,6 @@ Devices:   id region zone     ip address:port replication ip:port  name weight p
             3      1    2 10.122.138.242:6000 10.122.138.242:6000 data02 100.00        512    0.00       
             4      1    3 10.122.138.243:6000 10.122.138.243:6000 data01 100.00        512    0.00       
             5      1    3 10.122.138.243:6000 10.122.138.243:6000 data02 100.00        512    0.00       
-[root@swift02 swift]# 
 ```
 
 ## 验证
