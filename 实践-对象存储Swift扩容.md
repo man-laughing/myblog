@@ -8,8 +8,8 @@
 ## 环境
 |  OS  |  Kernel | IP     | Version| Role | Note |
 |:-----|:--------|:-----|:---------|:-----|:-----|
-|CentOS 7.6|3.10.0|10.122.138.231|openstack ocata| proxy/storage |-|
-|CentOS 7.6|3.10.0|10.122.138.232|openstack ocata| proxy/storage |-|
+|CentOS 7.6|3.10.0|10.122.138.241|openstack ocata| proxy/storage |-|
+|CentOS 7.6|3.10.0|10.122.138.242|openstack ocata| proxy/storage |-|
 |CentOS 7.6|3.10.0|**10.122.138.243**|openstack ocata|storage |新增节点 10G*2 disk|
 
 
