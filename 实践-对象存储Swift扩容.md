@@ -264,4 +264,10 @@ note: `/srv/node*` is used as default value of `devices`, the real value is set 
 [root@swift01 ~]# 
 ```
 
+方法3：通过HTTP接口调用来验证
 
+```bash
+[root@swift02 swift]# curl http://10.122.138.241:8080/endpoints/LAUGHING_admin/test02/2G.test.zip
+["http://10.122.138.243:6000/data01/979/LAUGHING_admin/test02/2G.test.zip", "http://10.122.138.242:6000/data01/979/LAUGHING_admin/test02/2G.test.zip"][root@swift02 swift]# 
+[root@swift02 swift]# 
+```
