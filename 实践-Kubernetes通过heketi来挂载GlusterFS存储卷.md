@@ -123,7 +123,7 @@ NOTE: 以下所有操作需要在10.122.138.241节点执行即可
   }
 }
 [root@gfs01 heketi]# ./heketi --config=/opt/app/heketi/heketi.json &> access.log &   //启动heketi服务并放在后台运行
-``` 
+```
 
 * 导入gluster集群拓扑到heketi服务
 
