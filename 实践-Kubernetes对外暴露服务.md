@@ -247,6 +247,7 @@ spec:
           serviceName: nginx-web  
           servicePort: 80
 [root@qs-storage-swift-01 traefik]#
+[root@qs-storage-swift-01 traefik]# kubectl create -f test.nginx.yaml
 ```
 
 * 验证
