@@ -1,6 +1,6 @@
 
 ---
-title: 实践-配置MySQL5.7多源复制
+title: 实践-CentOS7配置MySQL5.7多源复制.md
 date: 2019/09/26
 tags: 
    mysql
