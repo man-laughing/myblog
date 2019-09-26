@@ -9,7 +9,7 @@ tags:
 
 ## 环境
 |OS          |Kernel   | Mysql version| 
-|------------|--------:| :------------| 
+|:-----------|:--------|:-------------| 
 |CentOS 7.3  |3.10.0   |5.7.19        |
   
 ## 先决条件
@@ -675,9 +675,10 @@ Master_SSL_Verify_Server_Cert: No
            Master_TLS_Version:
 2 rows in set (0.01 sec)
 ```
-
+ 
 ## 验证阶段
-#### Master A 机器插入数据
+
+* Master A 机器插入数据
 
 ```bash
 mysql> create database m1;
@@ -703,7 +704,7 @@ mysql> select * from tt;
 1 row in set (0.00 sec)
 ```
 
-#### Master B 机器插入数据
+* Master B 机器插入数据
 
 ```bash
 mysql> use m2
@@ -728,7 +729,7 @@ mysql> select * from tt;
 mysql>
 ```
 
-#### Slave  机器验证数据
+* Slave  机器验证数据
 
 ```bash
 mysql> show databases;
