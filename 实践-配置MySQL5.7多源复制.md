@@ -1,6 +1,6 @@
 
 ---
-title: 实践-MySQL5.7多源复制
+title: 实践-配置MySQL5.7多源复制
 date: 2019/09/26
 tags: 
    mysql
@@ -675,10 +675,8 @@ Master_SSL_Verify_Server_Cert: No
            Master_TLS_Version:
 2 rows in set (0.01 sec)
 ```
- 
 
 ## 验证阶段
-
 #### Master A 机器插入数据
 
 ```bash
