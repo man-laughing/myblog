@@ -89,7 +89,7 @@ Empty set (0.00 sec)
 
 mysql>
 ``` 
- 
+
 * 然后打开第一个连接的MYSQL交互窗口，执行插入操作
 
 ```bash
@@ -121,7 +121,6 @@ mysql>
 mysql> commit;  //提交事务
 Query OK, 0 rows affected (0.00 sec)
 ```
-
 
 
 ## 实际案例 | 一致性锁定读（LOCK IN SHARE MODE）
