@@ -78,7 +78,7 @@ Empty set (0.00 sec)
 mysql>
 ```
 
-* 打开第二个SSH连接，进入MYSQL交互窗口，执行事务，这里称之为事务2
+* 打开第二个SSH连接，进入MYSQL交互窗口，执行事务，这里称之为事务2 
  
 ```bash
 mysql> begin;    //声明事务开始
