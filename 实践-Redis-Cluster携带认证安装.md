@@ -46,7 +46,7 @@ Done installing documentation for redis after 1 seconds
 
 ```bash
 [root@localhost ~]#  yum install redis //我这里是自己打的RPM包，包里携带了redis-trib.rb脚本，默认redis3.x的源代码包里有该脚本，也可以自行获取
-``` 
+```
 
 * 准备配置文件
 
