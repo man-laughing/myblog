@@ -389,3 +389,141 @@ mysql> select * from t1;          //提交之后2个事务的数据都可以看�
 mysql>
 
 ```
+
+## 实际案例2（幻读）
+
+* 基础测试表
+
+```bash
+mysql> 
+mysql> select @@tx_isolation;
++-----------------+
+| @@tx_isolation  |
++-----------------+
+| REPEATABLE-READ |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> desc t1;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(64) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> show index from t1;
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| t1    |          0 | PRIMARY  |            1 | id          | A         |           0 |     NULL | NULL   |      | BTREE      |         |               |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+1 row in set (0.00 sec)
+
+mysql> select * from t1;
++----+----------+
+| id | name     |
++----+----------+
+|  3 | zhangsan |
++----+----------+
+1 row in set (0.00 sec)
+
+mysql> 
+```
+
+* Session1 
+
+```bash
+mysql> begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from t1;
++----+----------+
+| id | name     |
++----+----------+
+|  3 | zhangsan |
++----+----------+
+1 row in set (0.00 sec)
+
+mysql> 
+```
+
+* Session2 
+
+```bash
+mysql> select * from t1;
++----+----------+
+| id | name     |
++----+----------+
+|  3 | zhangsan |
++----+----------+
+1 row in set (0.00 sec)
+
+mysql>  
+```
+
+* Session1 
+
+```bash
+mysql> insert into t1 values (null,'lisi');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from t1;
++----+----------+
+| id | name     |
++----+----------+
+|  3 | zhangsan |
+|  4 | lisi     |
++----+----------+
+2 rows in set (0.00 sec)
+
+mysql> 
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+```
+
+
+* Session2 
+
+```bash
+mysql> select * from t1;  //可以看到这里数据依然没变，呼应此隔离级别《可重复读》。。
++----+----------+
+| id | name     |
++----+----------+
+|  3 | zhangsan |
++----+----------+
+1 row in set (0.00 sec)
+
+mysql> update t1 set name = "wangsu";
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0      //上面查到的明明是1行数据，这里实际上更新了2行，所以这里就已经发生了幻读问题了。。
+
+mysql> select * from t1;                //这里查到的也是2行
++----+--------+
+| id | name   |
++----+--------+
+|  3 | wangsu |
+|  4 | wangsu |
++----+--------+
+2 rows in set (0.01 sec)
+
+mysql> 
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from t1;
++----+--------+
+| id | name   |
++----+--------+
+|  3 | wangsu |
+|  4 | wangsu |
++----+--------+
+2 rows in set (0.00 sec)
+
+mysql> 
+
+```
