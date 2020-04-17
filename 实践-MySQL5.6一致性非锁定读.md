@@ -26,6 +26,12 @@ tags:
 * 提高了事务并发性？ 
 * 间接增强了事务隔离性？
 
+## 注意事项（Important）
+数据库状态的快照适用于事务中的SELECT语句，不一定适用于DML(select,insert,update,delete)语句。 如果您插入或修改一些行，然后提交该事务，则从另一个并发的REPEATABLE READ事务发出的DELETE或UPDATE语句可能会影响那些刚刚提交的行，即使会话无法查询它们。 如果某个事务确实更新或删除了另一个事务提交的行，则这些更改对于当前事务而言确实可见
+
+###### 英文原文：https://dev.mysql.com/doc/refman/5.7/en/innodb-consistent-read.html
+The snapshot of the database state applies to SELECT statements within a transaction, not necessarily to DML statements. If you insert or modify some rows and then commit that transaction, a DELETE or UPDATE statement issued from another concurrent REPEATABLE READ transaction could affect those just-committed rows, even though the session could not query them. If a transaction does update or delete rows committed by a different transaction, those changes do become visible to the current transaction. 
+
 ## 实际案例（隔离级别Read-Committed）
 
 * 准备好隔离级别设定以及测试的表。
@@ -108,7 +114,7 @@ mysql>
 * 打开第一个窗口进入MYSQL交互程序，在事务1中修改数据，注意不要提交
 
 ```bash
-mysql> update zl set id = 11 where id = 10;   //修改数据
+mysql> update zl set id = 11 where id = 10;   //修改数据，事实上已经占用了一个X排他锁，该锁没释放
 Query OK, 1 row affected (0.00 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
@@ -127,7 +133,7 @@ mysql>
 
 ```bash
 mysql>
-mysql> select * from zl;  //可以看到这里查到的数据还是事务开始执行的状态（个人理解这里就已经开始执行“一致性非锁定读”了，只不是事务1一直没提交，只能看到事务开始时的快照数据）
+mysql> select * from zl;  //这里立即可以看到10这个快照（历史）数据，就是因为没有等待事务1中的X排他锁，这就是一致性非锁定读。
 +----+
 | id |
 +----+
@@ -160,7 +166,7 @@ mysql>
 
 ```bash
 mysql>
-mysql> select * from zl;  //查询数据，可以看到随着事务1的提交，事务2这里立刻就可以看到最新的数据。这就是“一致性非锁定读”在这个级别Read-Committed下的体现，MYSQL总是尝试获取最新的快照数据。
+mysql> select * from zl;  //查询数据，可以看到随着事务1的提交，事务2这里立刻就可以看到最新的数据，MYSQL总是尝试获取最新的快照数据。
 +----+
 | id |
 +----+
@@ -250,7 +256,7 @@ mysql>
 * 打开第一个窗口进入MYSQL交互程序，在事务1中修改数据，注意不要提交
 
 ```bash
-mysql> update zl set id = 6 where id = 1;        //修改数据
+mysql> update zl set id = 6 where id = 1;        //修改数据，同时占用了一个X排他锁
 Query OK, 1 row affected (0.00 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
@@ -268,7 +274,7 @@ mysql>
 * 打开第二个窗口进入MYSQL交互程序，在事务2中查看数据
 
 ```bash
-mysql> select * from zl;   //可以看到这里读到的数据是事务2开始时zl表的状态，这就是MYSQL利用了“一致性非锁定读”的特性，读取到了一个行的历史快照且没有任何的锁开销，我的理解是这么做一定程度上是为了更好的并发性且充分满足了事务的隔离性。
+mysql> select * from zl;   //可以看到这里读到的数据是事务2开始时zl表的状态，这就是MYSQL利用了“一致性非锁定读”的特性（这里并没有等待事务1释放X锁），读取到了一个行的历史快照且没有任何的锁开销，我的理解是这么做一定程度上是为了更好的并发性且充分满足了事务的隔离性。
 +----+
 | id |
 +----+
@@ -317,7 +323,148 @@ mysql> select * from zl;       //查询数据，可以发现事务1和事务2的
 mysql>
 ```
 
+## 特殊案例-在非Select语句场景下的体现，呼应上文《注意事项》
+
+* 准备测试表、隔离级别
+
+```bash
+mysql> 
+mysql> select @@tx_isolation;                                                                                                                                      +----------------+
+| @@tx_isolation |
++----------------+
+| REPEATABLE-READ |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> desc t2;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| id    | int(11) | NO   | PRI | NULL    |       |
++-------+---------+------+-----+---------+-------+
+1 row in set (0.01 sec)
+
+mysql> select * from t2;
++----+
+| id |
++----+
+| 11 |
++----+
+1 row in set (0.00 sec)
+
+mysql> show index from t2;
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| t2    |          0 | PRIMARY  |            1 | id          | A         |           1 |     NULL | NULL   |      | BTREE      |         |               |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+1 row in set (0.00 sec)
+
+mysql> 
+```
+
+* Session1 
+
+```bash
+mysql> begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from t2;
++----+
+| id |
++----+
+| 11 |
++----+
+1 row in set (0.00 sec)
+
+mysql> 
+```
+
+* Session2
+
+```bash
+mysql> begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from t2;
++----+
+| id |
++----+
+| 11 |
++----+
+1 row in set (0.00 sec)
+
+mysql> 
+```
+
+* Session1 
+
+```bash
+mysql> insert into t2 values (222);    //插入一条数据
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from t2;
++-----+
+| id  |
++-----+
+|  11 |
+| 222 |
++-----+
+2 rows in set (0.00 sec)
+
+mysql> commit;      //提交
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+```
+
+
+* Session2
+
+```bash
+mysql> select * from t2;   //由于一致性非锁定读的存在，这里看到的数据还是快照（历史）数据
++----+
+| id |
++----+
+| 11 |
++----+
+1 row in set (0.00 sec)
+
+mysql> delete from t2 where id = 222;  //删除一条本事务内未知的数据（即Session1插入的数据），但是却执行成功了。。
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from t2;
++----+
+| id |
++----+
+| 11 |
++----+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+```
+
+
+* Session1
+
+```bash
+mysql> select * from t2;    //这里Session1就会奇怪了，刚才明明插入成功了，为什么现在就没有？这就是一致性非锁定读带来的另一个问题。。。
++----+
+| id |
++----+
+| 11 |
++----+
+1 row in set (0.00 sec)
+
+mysql> 
+```
+
 ## 一致性非锁定读在Read-Committed和Repeatable-Read两种级别下的差异现象？
 
 * Read-Committed 级别下，一致性非锁定读，读取到的数据是行的最新的快照。
-* Repeatable-Read级别下，一致性非锁定度，读取到的数据是行的事务开始时的快照。
+* Repeatable-Read级别下，一致性非锁定读，读取到的数据是行的事务开始时的快照。
