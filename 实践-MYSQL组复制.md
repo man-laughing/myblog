@@ -1,6 +1,6 @@
 
 ---
-title: 实践-MYSQL半同步复制
+title: 实践-MYSQL组复制
 date: 2020/04/26
 tags: 
   mysql
