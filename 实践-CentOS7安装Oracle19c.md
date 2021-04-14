@@ -1,11 +1,10 @@
 
 ---
  title: 实践-CentOS 7安装Oracle19c
- date:  2021/04/13
- tags:  
-    oracle
+ date:  2021/04/13 
+ tags: 
+   oracle
 ---
-
 
 
 ## 环境
