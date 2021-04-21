@@ -325,7 +325,7 @@ NOTE: 以下步骤在任意节点执行就好，然后把生成的文件（*.bui
 
 //配置account账户哈希环
 [root@swift01 ~]# cd /etc/swift/
-[root@swift01 swift]# swift-ring-builder account.builder create 10 2 1      //表示2^10个分区，2个副本，1个区域
+[root@swift01 swift]# swift-ring-builder account.builder create 10 2 1      //表示2^10个分区，2个副本，1个小时的最小分区移动时间
 [root@swift01 swift]# swift-ring-builder account.builder add --region 1 --zone 1 --ip 10.122.138.231 --port 6002 --device data01 --weight 100 
 [root@swift01 swift]# swift-ring-builder account.builder add --region 1 --zone 1 --ip 10.122.138.231 --port 6002 --device data02 --weight 100 
 [root@swift01 swift]# swift-ring-builder account.builder add --region 1 --zone 2 --ip 10.122.138.232 --port 6002 --device data01 --weight 100 
