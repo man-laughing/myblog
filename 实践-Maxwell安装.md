@@ -52,9 +52,9 @@ binlog_format=row    //必须设置为ROW
 * 被监控、采集的MYSQL服务端的Maxwell账号权限配置
 
 ```
-mysql> CREATE USER 'maxwell'@'%' IDENTIFIED BY 'XXXXXX';
-mysql> GRANT ALL ON maxwell.* TO 'maxwell'@'%';
-mysql> GRANT SELECT, REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'maxwell'@'%';
+mysql> CREATE USER 'zltest'@'%' IDENTIFIED BY 'zltest';
+mysql> GRANT ALL ON maxwell.* TO 'zltest'@'%';
+mysql> GRANT SELECT, REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'zltest'@'%';
 ``` 
  
  
@@ -80,7 +80,7 @@ drwxr-xr-x. 3 root root  8192 Jul 30 01:41 lib
 -rw-r--r--. 1 root root  2652 Dec 31 16:27 maxwell_running.log
 -rw-r--r--. 1 root root  3618 Jul 30 01:40 quickstart.md
 -rw-r--r--. 1 root root  1429 Jul 30 01:40 README.md
-[root@dbbackup maxwell-1.34]#
+[root@dbbackup maxwell-1.35]#
 ```
 
 * 编辑maxwell配置文件
